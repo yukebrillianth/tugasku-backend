@@ -4,10 +4,16 @@ const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
-
+const config = require('./config/config');
+const morgan = require('./config/morgan');
 const routes = require('./routes/v1');
 
 const app = express();
+
+if (config.env !== 'test') {
+    app.use(morgan.successHandler);
+    app.use(morgan.errorHandler);
+}
 
 // Add security HTTP headers
 app.use(helmet());
